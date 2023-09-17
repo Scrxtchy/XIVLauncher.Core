@@ -40,6 +40,8 @@ public interface ILauncherConfig
 
     public bool? IsOtpServer { get; set; }
 
+    public bool? ShowQRCode { get; set; }
+
     public bool? IsIgnoringSteam { get; set; }
 
     #region Patching

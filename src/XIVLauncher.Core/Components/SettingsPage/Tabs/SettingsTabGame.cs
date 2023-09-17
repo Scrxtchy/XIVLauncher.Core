@@ -35,6 +35,7 @@ public class SettingsTabGame : SettingsTab
         new SettingsEntry<ClientLanguage>(Strings.GameLanguageSetting, Strings.GameLanguageSettingDescription, () => Program.Config.ClientLanguage ?? ClientLanguage.English, x => Program.Config.ClientLanguage = x),
         new SettingsEntry<DpiAwareness>(Strings.GameDPIAwarenessSetting, Strings.GameDPIAwarenessSettingDescription, () => Program.Config.DpiAwareness ?? DpiAwareness.Unaware, x => Program.Config.DpiAwareness = x),
         new SettingsEntry<bool>(Strings.UseXLAuthMacrosSetting, Strings.UseXLAuthMacrosSettingDescription, () => Program.Config.IsOtpServer ?? false, x => Program.Config.IsOtpServer = x),
+        new SettingsEntry<bool>("Display QR Codes for OTP macros", "Check this if you want a QR code to be displayed on the OTP screen.\nIt displays your IP address, different IPs can be displayed with a click.", () => Program.Config.ShowQRCode ?? false, x => Program.Config.ShowQRCode = x),
         new SettingsEntry<bool>(Strings.IgnoreSteamSetting, Strings.IgnoreSteamSettingDescription, () => Program.Config.IsIgnoringSteam ?? false, x => Program.Config.IsIgnoringSteam = x)
         {
             CheckVisibility = () => !CoreEnvironmentSettings.IsSteamCompatTool,
