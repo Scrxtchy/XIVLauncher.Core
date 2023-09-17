@@ -14,6 +14,7 @@ public class OtpEntryPage : Page
     private string otp = string.Empty;
     private bool appearing = false;
     private OtpListener? otpListener;
+    private int adapterInx = 0;
     private TaskCompletionSource<string?> resultTcs = new();
 
     public string? Result { get; private set; }
@@ -143,6 +144,28 @@ public class OtpEntryPage : Page
         }
 
         ImGui.EndChild();
+
+        if (App.Settings.IsOtpServer ?? false && this.otpListener != null)
+        {
+            var qrSize = new Vector2(410, 430);
+
+            //TODO: Window size + fit
+            ImGui.SetNextWindowPos(new Vector2(10, 10), ImGuiCond.Always);
+            ImGui.SetNextWindowBgAlpha(0.4f);
+
+            if (ImGui.BeginChild("###otp-qr", qrSize, true, ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoScrollbar))
+            {
+                ImGui.Image(TextureWrap.Load(otpListener.qrcodes[adapterInx].qr).ImGuiHandle, new Vector2(400,400));
+                if (ImGui.IsItemClicked())
+                {
+                    adapterInx = adapterInx + 1;
+                    if (adapterInx > otpListener.qrcodes.Length - 1) adapterInx = 0;
+                }
+                ImGuiHelpers.CenteredText(otpListener.qrcodes[adapterInx].ip);
+            }
+
+            ImGui.EndChild();
+        }
 
         ImGui.PopStyleVar();
 
