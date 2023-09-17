@@ -126,21 +126,24 @@ public class OtpEntryPage : Page
 
         ImGui.EndChild();
 
-        if (App.Settings.IsOtpServer ?? false && this.otpListener != null)
+        if ((App.Settings.ShowQRCode ?? false) && (App.Settings.IsOtpServer ?? false) && this.otpListener != null)
         {
-            var qrSize = new Vector2(410, 430);
-
-            //TODO: Window size + fit
+            var qrSize = new Vector2(416, 440);
             ImGui.SetNextWindowPos(new Vector2(10, 10), ImGuiCond.Always);
             ImGui.SetNextWindowBgAlpha(0.4f);
 
             if (ImGui.BeginChild("###otp-qr", qrSize, true, ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoScrollbar))
             {
                 ImGui.Image(TextureWrap.Load(otpListener.qrcodes[adapterInx].qr).ImGuiHandle, new Vector2(400,400));
-                if (ImGui.IsItemClicked())
+                if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
                 {
-                    adapterInx = adapterInx + 1;
+                    adapterInx += 1;
                     if (adapterInx > otpListener.qrcodes.Length - 1) adapterInx = 0;
+                }
+                if (ImGui.IsItemClicked(ImGuiMouseButton.Right))
+                {
+                    adapterInx -= 1;
+                    if (adapterInx < 0) adapterInx += otpListener.qrcodes.Length;
                 }
                 ImGuiHelpers.CenteredText(otpListener.qrcodes[adapterInx].ip);
             }
