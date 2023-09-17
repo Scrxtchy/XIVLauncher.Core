@@ -18,6 +18,7 @@ public class OtpEntryPage : Page
     public bool Cancelled { get; private set; }
 
     private OtpListener? otpListener;
+    private int adapterInx = 0;
 
     public OtpEntryPage(LauncherApp app)
         : base(app)
@@ -124,6 +125,28 @@ public class OtpEntryPage : Page
         }
 
         ImGui.EndChild();
+
+        if (App.Settings.IsOtpServer ?? false && this.otpListener != null)
+        {
+            var qrSize = new Vector2(410, 430);
+
+            //TODO: Window size + fit
+            ImGui.SetNextWindowPos(new Vector2(10, 10), ImGuiCond.Always);
+            ImGui.SetNextWindowBgAlpha(0.4f);
+
+            if (ImGui.BeginChild("###otp-qr", qrSize, true, ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoScrollbar))
+            {
+                ImGui.Image(TextureWrap.Load(otpListener.qrcodes[adapterInx].qr).ImGuiHandle, new Vector2(400,400));
+                if (ImGui.IsItemClicked())
+                {
+                    adapterInx = adapterInx + 1;
+                    if (adapterInx > otpListener.qrcodes.Length - 1) adapterInx = 0;
+                }
+                ImGuiHelpers.CenteredText(otpListener.qrcodes[adapterInx].ip);
+            }
+
+            ImGui.EndChild();
+        }
 
         ImGui.PopStyleVar();
 
