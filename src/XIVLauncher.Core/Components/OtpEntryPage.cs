@@ -151,7 +151,7 @@ public class OtpEntryPage : Page
             ImGui.SetNextWindowPos(new Vector2(10, 10), ImGuiCond.Always);
             ImGui.SetNextWindowBgAlpha(0.4f);
 
-            if (ImGui.BeginChild("###otp-qr", qrSize, true, ImGuiWindowFlags.AlwaysAutoResize | ImGuiWindowFlags.NoScrollbar))
+            if (ImGui.BeginChild("###otp-qr", qrSize, ImGuiChildFlags.AlwaysAutoResize | ImGuiChildFlags.AutoResizeX )) // shonky fix
             {
                 ImGui.Image(TextureWrap.Load(otpListener.qrcodes[adapterInx].qr).ImGuiHandle, new Vector2(400,400));
                 if (ImGui.IsItemClicked(ImGuiMouseButton.Left))
